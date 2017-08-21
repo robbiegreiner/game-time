@@ -12,6 +12,36 @@ section{
   left: 50px;
   height: 200px;
   width: 400px;
-  background-color: green;
+  background-color: #058213;
+  z-index: 1;
+  color: #593a01;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2px solid #825705;
+}
+
+img{
+  position: absolute;
+  left: 11px;
+  top: 83px;
+  height: 600;
+  width: 480;
   z-index: 0;
+}
+
+input{
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+button{
+  width: 150px;
+}
+
+.duck-soup-h1{
+  margin: 0;
+  margin-bottom: 40px;
 }
