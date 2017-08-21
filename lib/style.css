@@ -5,3 +5,13 @@ canvas {
 section{
   display: flex;
 }
+
+.welcome-screen{
+  position: absolute;
+  top: 300px;
+  left: 50px;
+  height: 200px;
+  width: 400px;
+  background-color: green;
+  z-index: 0;
+}
