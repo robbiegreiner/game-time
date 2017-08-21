@@ -49,17 +49,18 @@
 	const Ground = __webpack_require__(3);
 	const Obstacle = __webpack_require__(4);
 	const ObstacleUpper = __webpack_require__(5);
-	let style = __webpack_require__(6);
+	const Player = __webpack_require__(6);
+	let style = __webpack_require__(7);
 
 	const canvas = document.getElementById('canvas');
 	const context = canvas.getContext('2d');
 
-	var score = 0;
-	var speed = 1;
 	let obstacleArray = [];
 	let obstacleBelowArray = [];
 	let obstacleAboveArray = [];
 	var NewObstacleXLocation = 500;
+	const player = new Player("Ben");
+	let playerArray = [];
 
 	//lower Obstacle Randomizing
 	// function generateFirstXLocationLowerObstacle(min, max) {
@@ -75,7 +76,7 @@
 	  let NewObstacleHeightLowerObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(150)) + parseInt(150));
 	  // obstacleArray.push (new Obstacle (NewObstacleXLocation, NewObstacleHeightLowerObstacle, 50, 800))
 	  obstacleBelowArray.push(new Obstacle(NewObstacleXLocation, NewObstacleHeightLowerObstacle, 75, 800));
-	  console.log(NewObstacleHeightLowerObstacle);
+	  // console.log(NewObstacleHeightLowerObstacle);
 	}
 
 	function randomXAndHeightGenerationLowerObstacle() {
@@ -84,10 +85,9 @@
 	    let lowerOrUpper = Math.round(Math.random() * parseInt(1) + parseInt(1));
 	    if (lowerOrUpper === 1) {
 	      generateOtherXLocationsLowerObstacle(NewObstacleXLocation + 300, NewObstacleXLocation + 400);
-	      console.log(obstacleBelowArray);
+	      // console.log(obstacleBelowArray);
 	    } else if (lowerOrUpper === 2) {
 	      generateOtherXLocationsUpperObstacle(NewObstacleXLocation + 300, NewObstacleXLocation + 400);
-	      console.log(obstacleAboveArray);
 	    }
 	  }
 	}
@@ -107,8 +107,8 @@
 	  NewObstacleXLocation = Math.round(Math.random() * (parseInt(max) - parseInt(min)) + parseInt(min));
 	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(200) - parseInt(100)) + parseInt(100));
 	  // obstacleArray.push (new Obstacle (NewObstacleXLocation, 0, 50, NewObstacleHeightUpperObstacle))
-	  obstacleAboveArray.push(new ObstacleUpper(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 800, 100, NewObstacleHeightUpperObstacle));
-	  console.log(NewObstacleHeightUpperObstacle);
+	  obstacleAboveArray.push(new ObstacleUpper(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 800, 75, NewObstacleHeightUpperObstacle));
+	  // console.log(NewObstacleHeightUpperObstacle);
 	}
 
 	//   function randomXAndHeightGenerationUpperObstacle (){
@@ -132,28 +132,28 @@
 	  background.draw(context);
 	  background.backgroundMove();
 	  bird.draw(context);
-	  ground.draw(context);
-	  ground.groundMove();
 	  obstacleAboveArray.forEach(function (obstacle) {
-	    if (score === 0) {
+	    if (player.score === 0) {
 	      obstacle.obstacleMove(1);
 	      obstacle.draw(context);
 	    }
-	    if (score > 0) {
-	      obstacle.obstacleMove(score);
+	    if (player.score > 0) {
+	      obstacle.obstacleMove(player.score);
 	      obstacle.draw(context);
 	    }
 	  });
 	  obstacleBelowArray.forEach(function (obstacle) {
-	    if (score === 0) {
+	    if (player.score === 0) {
 	      obstacle.obstacleMove(1);
 	      obstacle.draw(context);
 	    }
-	    if (score > 0) {
-	      obstacle.obstacleMove(score);
+	    if (player.score > 0) {
+	      obstacle.obstacleMove(player.score);
 	      obstacle.draw(context);
 	    }
 	  });
+	  ground.draw(context);
+	  ground.groundMove();
 	  bird.gravity();
 	  collisionDetectionBelow();
 	  if (collision === true) {
@@ -177,8 +177,9 @@
 	    var o = obstacleBelowArray[i];
 	    if (bird.x > o.x - bird.width && bird.x < o.x + o.width - bird.width / 2 && bird.y - 5 > o.y - bird.height || bird.y > 485) {
 	      collision = true;
+	      storePlayer(player.name);
 	      alert("Game Over");
-	      $('ul').append("<li>Robbie Greiner:" + score + "</li><li><button class='play-again'>Play Again</button></li>");
+	      $('ul').append("<li>" + player.name + " " + player.score + "</li><li><button class='play-again'>Play Again</button></li>");
 	      return;
 	    }
 	  }
@@ -187,10 +188,11 @@
 	function collisionDetectionAbove() {
 	  for (var i = 0; i < obstacleAboveArray.length; i++) {
 	    var o = obstacleAboveArray[i];
-	    if (bird.x > o.x - bird.width && bird.x < o.x + o.width - bird.width / 2 && bird.y < o.y + o.height) {
+	    if (bird.x > o.x - bird.width && bird.x < o.x + o.width - bird.width / 2 && bird.y < o.y + 800) {
 	      collision = true;
+	      storePlayer(player.name);
 	      alert("Game Over");
-	      $('ul').append("<li>Robbie Greiner:" + score + "</li><li><button class='play-again'>Play Again</button></li>");
+	      $('ul').append("<li>" + player.name + " " + player.score + "</li><li><button class='play-again'>Play Again</button></li>");
 	      return;
 	    }
 	  }
@@ -201,10 +203,10 @@
 	    var o = obstacleAboveArray[i];
 	    if (bird.x > o.x + o.width && o.scored === false) {
 	      o.scored = true;
-	      score++;
+	      player.score++;
 	    }
 	  }
-	  $("#score-text").text(score);
+	  $("#score-text").text(player.score);
 	}
 
 	function updateScoreLower() {
@@ -212,20 +214,36 @@
 	    var o = obstacleBelowArray[i];
 	    if (bird.x > o.x + o.width && o.scored === false) {
 	      o.scored = true;
-	      score++;
+	      player.score++;
 	    }
 	  }
-	  $("#score-text").text(score);
+	  $("#score-text").text(player.score);
 	}
 
 	function reloadPage() {
-	  console.log("hi");
+	  // console.log("hi");
 	  document.location.reload();
+	}
+
+	function storePlayer(playername) {
+	  playerArray.push(player.name);
+	  localStorage.setItem('playerArray', JSON.stringify(playerArray));
+	  localStorage.setItem(playername, JSON.stringify(player));
+	}
+
+	function getPlayerScores() {
+	  playerArray = JSON.parse(localStorage.getItem('playerArray'));
+	  const scores = [];
+	  for (var i = 0; i < playerArray.length; i++) {
+	    scores.push(JSON.parse(localStorage.getItem(playerArray[i])));
+	  }
 	}
 
 	$('ul').on('click', '.play-again', reloadPage);
 	document.addEventListener('click', birdFly);
+	document.addEventListener('keyup', birdFly);
 
+	getPlayerScores();
 	requestAnimationFrame(gameLoop);
 
 /***/ }),
@@ -241,21 +259,34 @@
 	    this.y = canvasHeight / 2;
 	    this.width = 60;
 	    this.height = 48;
+	    this.gravityCounter = 0;
+	    this.drawCounter = 0;
 	  }
 
 	  draw(context) {
 	    let birdImage = new Image();
 	    birdImage.src = '../assets/flappy-the-bird-use.png';
 	    context.drawImage(birdImage, this.x, this.y);
+	    this.drawCounter++;
 	    // context.fillRect(this.x, this.y, this.width, this.height);
 	  }
 
 	  gravity() {
-	    this.y += 1.5;
+	    this.gravityCounter++;
+	    if (this.gravityCounter >= 0) {
+	      this.y += 1.5;
+	    }
+	    if (this.gravityCounter >= 15) {
+	      this.y += 2;
+	    }
+	    if (this.gravityCounter >= 30) {
+	      this.y += 3;
+	    }
 	  }
 
 	  flyUp() {
 	    this.y -= 40;
+	    this.gravityCounter = 0;
 	  }
 	}
 
@@ -328,12 +359,13 @@
 	    this.y = y;
 	    this.width = width;
 	    this.height = height;
+	    this.scored = false;
 	  }
 
 	  draw(context) {
 	    let tubeImageLower = new Image();
 
-	    context.fillRect(this.x, this.y, this.width, this.height);
+	    // context.fillRect(this.x, this.y, this.width, this.height);
 	    tubeImageLower.src = '../assets/tubes_lower_use.png';
 	    context.drawImage(tubeImageLower, this.x, this.y);
 	  }
@@ -370,7 +402,9 @@
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Obstacle = __webpack_require__(4);
 
 	class ObstacleUpper extends Obstacle {
 	  constructor(x, y, width, height) {
@@ -385,7 +419,6 @@
 	  draw(context) {
 	    let tubeImageUpper = new Image();
 
-	    context.fillRect(this.x, 0, this.width, this.height);
 	    tubeImageUpper.src = '../assets/tubes_uper_use.png';
 	    context.drawImage(tubeImageUpper, this.x, this.y);
 	  }
@@ -399,15 +432,29 @@
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+	class Player {
+	  constructor(name) {
+	    this.name = name;
+	    this.score = 0;
+	  }
+
+	}
+
+	module.exports = Player;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(7);
+	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(9)(content, {});
+	var update = __webpack_require__(10)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -424,10 +471,10 @@
 	}
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(8)();
+	exports = module.exports = __webpack_require__(9)();
 	// imports
 
 
@@ -438,7 +485,7 @@
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	/*
@@ -494,7 +541,7 @@
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
