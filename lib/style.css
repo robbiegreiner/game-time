@@ -1,7 +1,95 @@
 canvas {
   border: 3px solid black;
+  margin-left: 200px;
 }
 
 section{
   display: flex;
+  margin-top: 79px;
+}
+
+.welcome-screen,
+.game-over{
+  position: absolute;
+  top: 300px;
+  left: 250px;
+  height: 200px;
+  width: 400px;
+  background-color: #058213;
+  z-index: 1;
+  color: #593a01;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2px solid #825705;
+}
+
+.game-over{
+  z-index: 3;
+  display: none;
+}
+
+img{
+  position: absolute;
+  left: 211px;
+  top: 83px;
+  height: 600;
+  width: 480;
+  z-index: 0;
+}
+
+input{
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+button{
+  width: 150px;
+}
+
+.duck-soup-h1{
+  margin: 0;
+  margin-bottom: 40px;
+}
+
+.score-board{
+  width: 480px;
+  height: 640px;
+  background-color: #058213;
+  margin-left: 30px;
+  border: 3px solid black;
+}
+
+ul{
+  list-style-type: none;
+  margin-left: 10%;
+}
+
+li{
+  font-size: 20px;
+  margin-bottom: 10px;
+  width: 200px;
+}
+
+.score-text{
+  float: right;
+}
+
+h2{
+  display: inline-block;
+  margin-left: 19%;
+  margin-bottom: 0;
+}
+
+.score-h2{
+  margin-left: 100px;
+}
+
+.top-score{
+  position: absolute;
+  left: 380px;
+  z-index: 3;
+  color: white;
 }
