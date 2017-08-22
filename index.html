@@ -6,11 +6,25 @@
   <title>Duck Soup</title>
 </head>
 <body>
-  <h1>Score = <span id="score-text">0</span></h1>
+  <div class="welcome-screen">
+    <h1 class="duck-soup-h1">Duck Soup</h1>
+    <input type="text" name="" value="" placeholder="Enter Name"></input>
+    <button type="button" class="play-button" name="button">PLAY</button>
+  </div>
+  <div class="game-over">
+    <h1 class="duck-soup-h1">GAME OVER</h1>
+    <button type="button" class="play-again-button" name="button">PLAY AGAIN</button>
+  </div>
+  <h1 class="top-score">Score = <span id="score-text">0</span></h1>
+  <img src="assets/flappy_static_bkg.png" alt="" height="640" width="480">
   <section>
     <canvas id="canvas" width="480" height="640"></canvas>
-    <ul>
-    </ul>
+    <article class="score-board">
+      <h2>Name</h2>
+      <h2 class="score-h2">Score</h2>
+      <ul>
+      </ul>
+    </article>
   </section>
   <script src="main.bundle.js"></script>
 </body>
