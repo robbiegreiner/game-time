@@ -1,15 +1,17 @@
 canvas {
   border: 3px solid black;
+  margin-left: 200px;
 }
 
 section{
   display: flex;
+  margin-top: 79px;
 }
 
 .welcome-screen{
   position: absolute;
   top: 300px;
-  left: 50px;
+  left: 250px;
   height: 200px;
   width: 400px;
   background-color: #058213;
@@ -25,7 +27,7 @@ section{
 
 img{
   position: absolute;
-  left: 11px;
+  left: 211px;
   top: 83px;
   height: 600;
   width: 480;
@@ -77,4 +79,11 @@ h2{
 
 .score-h2{
   margin-left: 100px;
+}
+
+.top-score{
+  position: absolute;
+  left: 380px;
+  z-index: 3;
+  color: white;
 }
