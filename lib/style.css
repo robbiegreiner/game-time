@@ -8,7 +8,8 @@ section{
   margin-top: 79px;
 }
 
-.welcome-screen{
+.welcome-screen,
+.game-over{
   position: absolute;
   top: 300px;
   left: 250px;
@@ -23,6 +24,11 @@ section{
   justify-content: center;
   border-radius: 10px;
   border: 2px solid #825705;
+}
+
+.game-over{
+  z-index: 3;
+  display: none;
 }
 
 img{
