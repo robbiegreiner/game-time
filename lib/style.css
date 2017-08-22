@@ -15,10 +15,11 @@ section{
 }
 
 .welcome-screen,
-.game-over{
+.game-over,
+.instruction-screen{
   position: absolute;
   top: 300px;
-  left: 17.8%;
+  left: 17.2%;
   height: 200px;
   width: 400px;
   background-color: #058213;
@@ -35,6 +36,14 @@ section{
 .game-over{
   z-index: 3;
   display: none;
+}
+
+.instruction-screen{
+  z-index: 1;
+}
+
+.welcome-screen{
+  z-index: 2;
 }
 
 img{
@@ -112,4 +121,9 @@ h2{
   z-index: 3;
   color: white;
   font-size: 16px;
+}
+
+h4{
+  margin: 0;
+  margin-bottom: 20px;
 }
