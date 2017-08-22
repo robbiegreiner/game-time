@@ -45,3 +45,36 @@ button{
   margin: 0;
   margin-bottom: 40px;
 }
+
+.score-board{
+  width: 480px;
+  height: 640px;
+  background-color: #058213;
+  margin-left: 30px;
+  border: 3px solid black;
+}
+
+ul{
+  list-style-type: none;
+  margin-left: 10%;
+}
+
+li{
+  font-size: 20px;
+  margin-bottom: 10px;
+  width: 200px;
+}
+
+.score-text{
+  float: right;
+}
+
+h2{
+  display: inline-block;
+  margin-left: 19%;
+  margin-bottom: 0;
+}
+
+.score-h2{
+  margin-left: 100px;
+}
