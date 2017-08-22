@@ -1,5 +1,5 @@
 body{
-  font-family: monospace;
+font-family: 'Press Start 2P', cursive;
 }
 
 canvas {
@@ -79,7 +79,7 @@ ul{
 li{
   font-size: 20px;
   margin-bottom: 10px;
-  width: 200px;
+  width: 300px;
 }
 
 .score-text{
@@ -98,8 +98,8 @@ h2{
 
 .top-score{
   position: absolute;
-  left: 17%;
-  top: 650px;
+  left: 27%;
+  top: 80px;
   z-index: 3;
   color: white;
   font-size: 40px;
