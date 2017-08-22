@@ -55,7 +55,6 @@
 	const canvas = document.getElementById('canvas');
 	const context = canvas.getContext('2d');
 
-	let obstacleArray = [];
 	let obstacleBelowArray = [];
 	let obstacleAboveArray = [];
 	var NewObstacleXLocation = 500;
@@ -66,91 +65,71 @@
 	function generateFirstXLocationLowerObstacle(min, max) {
 	  NewObstacleXLocation = Math.round(Math.random() * (parseInt(max) - parseInt(min)) + parseInt(min));
 	  let NewObstacleHeightLowerObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(150)) + parseInt(150));
-	  obstacleArray.push(new Obstacle(NewObstacleXLocation, NewObstacleHeightLowerObstacle, 50, 800));
+
 	  obstacleBelowArray.push(new Obstacle(NewObstacleXLocation, NewObstacleHeightLowerObstacle, 75, 800));
-	  console.log(NewObstacleXLocation);
 	}
 
 	function generateOtherXLocationsLowerObstacle(min, max) {
 	  NewObstacleXLocation = Math.round(Math.random() * (parseInt(max) - parseInt(min)) + parseInt(min));
-	  let NewObstacleHeightLowerObstacle = Math.round(Math.random() * (parseInt(200) - parseInt(100)) + parseInt(100));
+	  let NewObstacleHeightLowerObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(100)) + parseInt(100));
+
 	  obstacleBelowArray.push(new Obstacle(NewObstacleXLocation, NewObstacleHeightLowerObstacle, 75, 800));
-	  // console.log(NewObstacleHeightLowerObstacle);
 	}
 
-	function firstRandomXAndHeightGenerationLowerObstacle() {
+	function firstRandomXAndHeightGenerationObstacle() {
 	  let lowerOrUpper = Math.round(Math.random() * parseInt(1) + parseInt(1));
+
 	  if (lowerOrUpper === 1) {
 	    generateFirstXLocationLowerObstacle(NewObstacleXLocation - 20, NewObstacleXLocation);
-	    console.log(obstacleBelowArray);
 	  } else if (lowerOrUpper === 2) {
 	    generateFirstXLocationUpperObstacle(NewObstacleXLocation - 20, NewObstacleXLocation);
-	    console.log(obstacleAboveArray);
 	  }
 	}
 
-	function randomXAndHeightGenerationLowerObstacle() {
-	  // generateFirstXLocationLowerObstacle((NewObstacleXLocation-20), NewObstacleXLocation)
-	  for (var i = 0; i < 10; i++) {
+	function randomXAndHeightGenerationObstacle() {
+	  for (var i = 0; i < 9; i++) {
 	    let lowerOrUpper = Math.round(Math.random() * parseInt(1) + parseInt(1));
+
 	    if (lowerOrUpper === 1) {
-	      // generateFirstXLocationLowerObstacle((NewObstacleXLocation-20), NewObstacleXLocation)
 	      generateOtherXLocationsLowerObstacle(NewObstacleXLocation + 300, NewObstacleXLocation + 400);
-	      // console.log(obstacleBelowArray);
 	    } else if (lowerOrUpper === 2) {
-	      // generateFirstXLocationUpperObstacle((NewObstacleXLocation-20), NewObstacleXLocation)
 	      generateOtherXLocationsUpperObstacle(NewObstacleXLocation + 300, NewObstacleXLocation + 400);
 	    }
 	  }
 	}
 
-	function generateFirstXLocationBothTubes(min, max) {
-	  NewObstacleXLocation = Math.round(Math.random() * (parseInt(max) - parseInt(min)) + parseInt(min));
-	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(150)) + parseInt(150));
-
-	  obstacleBelowArray.push(new Obstacle(NewObstacleXLocation, NewObstacleHeightUpperObstacle, 75, 800));
-	  obstacleAboveArray.push(new ObstacleUpper(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 800, 75, NewObstacleHeightUpperObstacle));
-	}
-
 	function generateOtherXLocationsBothTubes(min, max) {
 	  NewObstacleXLocation = Math.round(Math.random() * (parseInt(max) - parseInt(min)) + parseInt(min));
-	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(150)) + parseInt(150));
+	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(50)) + parseInt(50));
 
-	  obstacleBelowArray.push(new Obstacle(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 200, 75, 800));
+	  obstacleBelowArray.push(new Obstacle(NewObstacleXLocation, NewObstacleHeightUpperObstacle + 200, 75, 800));
 	  obstacleAboveArray.push(new ObstacleUpper(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 800, 75, NewObstacleHeightUpperObstacle));
 	}
 
 	function randomTopAndBottomTubeGenerate() {
-	  for (var i = 0; i < 10; i++) {
-	    generateFirstXLocationBothTubes(NewObstacleXLocation + 300, NewObstacleXLocation + 400);
+	  for (var i = 0; i < 20; i++) {
 	    generateOtherXLocationsBothTubes(NewObstacleXLocation + 300, NewObstacleXLocation + 400);
 	  }
 	}
 
-	// firstRandomXAndHeightGenerationLowerObstacle ()
-	// randomXAndHeightGenerationLowerObstacle ()
+	firstRandomXAndHeightGenerationObstacle();
+	randomXAndHeightGenerationObstacle();
 	randomTopAndBottomTubeGenerate();
 
 	// upper Obstacles Randomizing
 	function generateFirstXLocationUpperObstacle(min, max) {
 	  NewObstacleXLocation = Math.round(Math.random() * (parseInt(max) - parseInt(min)) + parseInt(min));
-	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(400) - parseInt(150)) + parseInt(150));
+	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(150)) + parseInt(150));
+
 	  obstacleAboveArray.push(new ObstacleUpper(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 800, 75, NewObstacleHeightUpperObstacle));
 	}
 
 	function generateOtherXLocationsUpperObstacle(min, max) {
 	  NewObstacleXLocation = Math.round(Math.random() * (parseInt(max) - parseInt(min)) + parseInt(min));
-	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(400) - parseInt(150)) + parseInt(150));
+	  let NewObstacleHeightUpperObstacle = Math.round(Math.random() * (parseInt(300) - parseInt(150)) + parseInt(150));
+
 	  obstacleAboveArray.push(new ObstacleUpper(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 800, 75, NewObstacleHeightUpperObstacle));
 	}
-
-	//   function randomXAndHeightGenerationUpperObstacle (){
-	//     // generateFirstXLocationUpperObstacle((NewObstacleXLocation-20), NewObstacleXLocation)
-	//     for (var i = 0; i < 9; i++) {
-	//       generateOtherXLocationsUpperObstacle ((NewObstacleXLocation+300), (NewObstacleXLocation+400))
-	//     }
-	// }
-
 
 	const bird = new Bird();
 	const background = new Background();
@@ -166,48 +145,26 @@
 	  background.backgroundMove();
 	  bird.draw(context);
 	  obstacleAboveArray.forEach(function (obstacle) {
-	    if (player.score < 10) {
+	    if (player.score < 20) {
 	      obstacle.obstacleMove(1.5);
 	      obstacle.draw(context);
 	      return;
+	    } else if (player.score > 20) {
+	      obstacle.obstacleMove(3);
+	      obstacle.draw(context);
+	      return;
 	    }
-	    // if(player.score > 9 ){
-	    //   obstacle.obstacleMove(3);
-	    //   obstacle.draw(context);
-	    //   return;
-	    // }
-	    // if(player.score < 9){
-	    //   obstacle.obstacleMove(4);
-	    //   obstacle.draw(context)
-	    //   return;
-	    // }
-	    // if(player.score < 12){
-	    //   obstacle.obstacleMove(5);
-	    //   obstacle.draw(context);
-	    //   return;
-	    // }
 	  });
 	  obstacleBelowArray.forEach(function (obstacle) {
-	    if (player.score <= 3) {
+	    if (player.score < 20) {
 	      obstacle.obstacleMove(1.5);
 	      obstacle.draw(context);
 	      return;
+	    } else if (player.score > 20) {
+	      obstacle.obstacleMove(3);
+	      obstacle.draw(context);
+	      return;
 	    }
-	    // if(player.score < 6 ){
-	    //   obstacle.obstacleMove(3);
-	    //   obstacle.draw(context);
-	    //   return;
-	    // }
-	    // if(player.score < 9){
-	    //   obstacle.obstacleMove(4);
-	    //   obstacle.draw(context)
-	    //   return;
-	    // }
-	    // if(player.score < 12){
-	    //   obstacle.obstacleMove(5);
-	    //   obstacle.draw(context);
-	    //   return;
-	    // }
 	  });
 	  ground.draw(context);
 	  ground.groundMove();
@@ -232,6 +189,7 @@
 	function collisionDetectionBelow() {
 	  for (var i = 0; i < obstacleBelowArray.length; i++) {
 	    var o = obstacleBelowArray[i];
+
 	    if (bird.x > o.x - bird.width && bird.x < o.x + o.width - bird.width / 2 && bird.y - 5 > o.y - bird.height || bird.y > 485) {
 	      collision = true;
 	      storePlayer(player.name);
@@ -245,6 +203,7 @@
 	function collisionDetectionAbove() {
 	  for (var i = 0; i < obstacleAboveArray.length; i++) {
 	    var o = obstacleAboveArray[i];
+
 	    if (bird.x > o.x - bird.width && bird.x < o.x + o.width - bird.width / 2 && bird.y < o.y + 800) {
 	      collision = true;
 	      storePlayer(player.name);
@@ -258,6 +217,7 @@
 	function updateScoreUpper() {
 	  for (var i = 0; i < obstacleAboveArray.length; i++) {
 	    var o = obstacleAboveArray[i];
+
 	    if (bird.x > o.x + o.width && o.scored === false) {
 	      o.scored = true;
 	      player.score++;
@@ -269,6 +229,7 @@
 	function updateScoreLower() {
 	  for (var i = 0; i < obstacleBelowArray.length; i++) {
 	    var o = obstacleBelowArray[i];
+
 	    if (bird.x > o.x + o.width && o.scored === false) {
 	      o.scored = true;
 	      player.score++;
@@ -278,7 +239,6 @@
 	}
 
 	function reloadPage() {
-	  // console.log("hi");
 	  document.location.reload();
 	}
 
@@ -292,6 +252,7 @@
 	  if (localStorage.length > 0) {
 	    playerArray = JSON.parse(localStorage.getItem('playerArray'));
 	    const scores = [];
+
 	    for (var i = 0; i < playerArray.length; i++) {
 	      scores.push(JSON.parse(localStorage.getItem(playerArray[i])));
 	    }
@@ -324,6 +285,7 @@
 
 	  draw(context) {
 	    let birdImage = new Image();
+
 	    birdImage.src = '../assets/flappy-the-bird-use.png';
 	    context.drawImage(birdImage, this.x, this.y);
 	    this.drawCounter++;
@@ -363,6 +325,7 @@
 
 	  draw(context) {
 	    let bkgImage = new Image();
+
 	    bkgImage.src = '../assets/flappy_bckg.png';
 	    context.drawImage(bkgImage, this.x, this.y);
 	  }
@@ -389,6 +352,7 @@
 
 	  draw(context) {
 	    let groundImage = new Image();
+
 	    groundImage.src = '../assets/flappy-ground.png';
 	    context.drawImage(groundImage, this.x, this.y);
 	  }
@@ -400,11 +364,6 @@
 	    }
 	  }
 	}
-
-	// class Ground extends Obstacle {
-	//   super()
-	// }
-
 
 	module.exports = Ground;
 
@@ -433,29 +392,6 @@
 	    this.x = this.x - speed;
 	  }
 	}
-
-	// class ObstacleUpper extends Obstacle {
-	//   constructor (x, y, width, height) {
-	//     super(x, y, width, height)
-	//     this.x = x;
-	//     this.y = y;
-	//     this.width = width;
-	//     this.height = height;
-	//     this.scored = false
-	//   }
-	//
-	//   draw (context) {
-	//     let tubeImageUpper = new Image()
-	//
-	//     context.fillRect(this.x, 0, this.width, this.height);
-	//     tubeImageUpper.src = '../assets/tubes_uper_use.png';
-	//     context.drawImage(tubeImageUpper, this.x, this.y)
-	//   }
-	//
-	//   obstacleMove(speed) {
-	//     this.x = this.x - speed;
-	//   }
-	// }
 
 	module.exports = Obstacle;
 
