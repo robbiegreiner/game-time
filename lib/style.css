@@ -1,5 +1,7 @@
 body{
 font-family: 'Press Start 2P', cursive;
+background-color: #008c41;
+background-image: url("https://www.transparenttextures.com/patterns/brick-wall-dark.png");
 }
 
 canvas {
@@ -72,12 +74,14 @@ button{
 .score-board{
   width: 480px;
   height: 640px;
+  color: #593a01;
   background-color: #058213;
   margin-left: 30px;
   border: 3px solid black;
   position: absolute;
   left: 60%;
   top: 83px;
+  background-image: url("https://www.transparenttextures.com/patterns/brick-wall.png");
 }
 
 ul{
