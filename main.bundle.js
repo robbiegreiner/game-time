@@ -45,12 +45,12 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const Bird = __webpack_require__(1);
-	const Background = __webpack_require__(2);
-	const Ground = __webpack_require__(3);
-	const Obstacle = __webpack_require__(4);
-	const ObstacleUpper = __webpack_require__(5);
-	const Player = __webpack_require__(6);
-	let style = __webpack_require__(7);
+	const Background = __webpack_require__(3);
+	const Ground = __webpack_require__(4);
+	const Obstacle = __webpack_require__(5);
+	const ObstacleUpper = __webpack_require__(6);
+	const Player = __webpack_require__(7);
+	let style = __webpack_require__(8);
 
 	const canvas = document.getElementById('canvas');
 	const context = canvas.getContext('2d');
@@ -58,8 +58,10 @@
 	let obstacleBelowArray = [];
 	let obstacleAboveArray = [];
 	var NewObstacleXLocation = 500;
-	const player = new Player("Ben");
 	let playerArray = [];
+	let scores = [];
+	let player;
+	let orderedPlayerArray = [];
 
 	// lower Obstacle Randomizing
 	function generateFirstXLocationLowerObstacle(min, max) {
@@ -87,7 +89,7 @@
 	}
 
 	function randomXAndHeightGenerationObstacle() {
-	  for (var i = 0; i < 9; i++) {
+	  for (var i = 0; i < 4; i++) {
 	    let lowerOrUpper = Math.round(Math.random() * parseInt(1) + parseInt(1));
 
 	    if (lowerOrUpper === 1) {
@@ -131,43 +133,49 @@
 	  obstacleAboveArray.push(new ObstacleUpper(NewObstacleXLocation, NewObstacleHeightUpperObstacle - 800, 75, NewObstacleHeightUpperObstacle));
 	}
 
-	const bird = new Bird();
-	const background = new Background();
-	const ground = new Ground();
+	console.log(canvas.width);
+
+	const bird = new Bird(canvas.width / 2, canvas.height / 2, 60, 48);
+	const background = new Background(0, 0);
+	const ground = new Ground(0, 528);
 
 	context.fillStyle = "rgba(0, 0, 0, 0)";
 
 	function gameLoop() {
-	  updateScoreUpper();
-	  updateScoreLower();
+	  updateScore();
+	  showLevel();
 	  context.clearRect(0, 0, canvas.width, canvas.height);
 	  background.draw(context);
 	  background.backgroundMove();
 	  bird.draw(context);
 	  obstacleAboveArray.forEach(function (obstacle) {
-	    if (player.score < 20) {
+	    if (player.score < 10) {
 	      obstacle.obstacleMove(1.5);
 	      obstacle.draw(context);
 	      return;
-	    } else if (player.score > 20) {
+	    } else if (player.score >= 10) {
 	      obstacle.obstacleMove(3);
 	      obstacle.draw(context);
 	      return;
 	    }
 	  });
 	  obstacleBelowArray.forEach(function (obstacle) {
-	    if (player.score < 20) {
+	    if (player.score < 10) {
 	      obstacle.obstacleMove(1.5);
 	      obstacle.draw(context);
 	      return;
-	    } else if (player.score > 20) {
+	    } else if (player.score >= 10) {
 	      obstacle.obstacleMove(3);
 	      obstacle.draw(context);
 	      return;
 	    }
 	  });
+	  if (player.score < 10) {
+	    ground.groundMove(1.5);
+	  } else if (player.score >= 10) {
+	    ground.groundMove(3);
+	  }
 	  ground.draw(context);
-	  ground.groundMove();
 	  bird.gravity();
 	  collisionDetectionBelow();
 	  if (collision === true) {
@@ -180,7 +188,13 @@
 	  requestAnimationFrame(gameLoop);
 	}
 
-	function birdFly() {
+	function birdFly(event) {
+	  if (event.keyCode === 38) {
+	    bird.flyUp();
+	  }
+	}
+
+	function birdFlyMouse(event) {
 	  bird.flyUp();
 	}
 
@@ -192,9 +206,9 @@
 
 	    if (bird.x > o.x - bird.width && bird.x < o.x + o.width - bird.width / 2 && bird.y - 5 > o.y - bird.height || bird.y > 485) {
 	      collision = true;
+	      gameOver();
 	      storePlayer(player.name);
-	      alert("Game Over");
-	      $('ul').append("<li>" + player.name + " " + player.score + "</li><li><button class='play-again'>Play Again</button></li>");
+	      $('ul').append("<li>" + player.name + " " + "<span class='score-text'>" + player.score + "</span></li>");
 	      return;
 	    }
 	  }
@@ -206,15 +220,24 @@
 
 	    if (bird.x > o.x - bird.width && bird.x < o.x + o.width - bird.width / 2 && bird.y < o.y + 800) {
 	      collision = true;
+	      gameOver();
 	      storePlayer(player.name);
-	      alert("Game Over");
-	      $('ul').append("<li>" + player.name + " " + player.score + "</li><li><button class='play-again'>Play Again</button></li>");
+	      $('ul').append("<li>" + player.name + " " + "<span class='score-text'>" + player.score + "</span></li>");
 	      return;
 	    }
 	  }
 	}
 
-	function updateScoreUpper() {
+	function updateScore() {
+	  if (player.score < 5) {
+	    updateScoreUpperL1();
+	    updateScoreLowerL1();
+	  } else {
+	    updateScoreL2();
+	  }
+	}
+
+	function updateScoreL2() {
 	  for (var i = 0; i < obstacleAboveArray.length; i++) {
 	    var o = obstacleAboveArray[i];
 
@@ -226,7 +249,19 @@
 	  $("#score-text").text(player.score);
 	}
 
-	function updateScoreLower() {
+	function updateScoreUpperL1() {
+	  for (var i = 0; i < obstacleAboveArray.length; i++) {
+	    var o = obstacleAboveArray[i];
+
+	    if (bird.x > o.x + o.width && o.scored === false) {
+	      o.scored = true;
+	      player.score++;
+	    }
+	  }
+	  $("#score-text").text(player.score);
+	}
+
+	function updateScoreLowerL1() {
 	  for (var i = 0; i < obstacleBelowArray.length; i++) {
 	    var o = obstacleBelowArray[i];
 
@@ -251,34 +286,68 @@
 	function getPlayerScores() {
 	  if (localStorage.length > 0) {
 	    playerArray = JSON.parse(localStorage.getItem('playerArray'));
-	    const scores = [];
-
+	    orderedPlayerArray = playerArray.sort(function (a, b) {
+	      return a - b;
+	    });
 	    for (var i = 0; i < playerArray.length; i++) {
 	      scores.push(JSON.parse(localStorage.getItem(playerArray[i])));
 	    }
+	    orderedPlayerArray = scores.sort(function (a, b) {
+	      return parseFloat(b.score) - parseFloat(a.score);
+	    });
+	    postScores();
 	  }
 	}
 
-	$('ul').on('click', '.play-again', reloadPage);
-	document.addEventListener('click', birdFly);
+	function postScores() {
+	  for (var i = 0; i < 15; i++) {
+	    $('ul').append("<li>" + orderedPlayerArray[i].name + " " + "<span class='score-text'>" + orderedPlayerArray[i].score + "</span></li>");
+	  }
+	}
+
+	$('.play-again-button').on('click', reloadPage);
+	$('.play-button').on('click', startGame);
+	$('.enter-name-button').on('click', hideNameInput);
+	document.addEventListener('click', birdFlyMouse);
 	document.addEventListener('keyup', birdFly);
 
 	getPlayerScores();
-	requestAnimationFrame(gameLoop);
+
+	function hideNameInput() {
+	  let name = $('input').val();
+	  player = new Player(name);
+	  $('.welcome-screen').remove();
+	}
+
+	function startGame() {
+	  $('.instruction-screen').remove();
+	  $('img').remove();
+	  requestAnimationFrame(gameLoop);
+	}
+
+	function gameOver() {
+	  $('.game-over').css('display', 'flex');
+	}
+
+	function showLevel() {
+	  let level = 1;
+	  if (player.score >= 5 && player.score < 10) {
+	    level = 2;
+	  } else if (player.score >= 10) {
+	    level = 3;
+	  }
+	  $("#level-text").text(level);
+	}
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	const canvasWidth = 480;
-	const canvasHeight = 640;
+	const GamePieces = __webpack_require__(2);
 
-	class Bird {
-	  constructor() {
-	    this.x = canvasWidth / 2;
-	    this.y = canvasHeight / 2;
-	    this.width = 60;
-	    this.height = 48;
+	class Bird extends GamePieces {
+	  constructor(x, y, width, height) {
+	    super(x, y, width, height);
 	    this.gravityCounter = 0;
 	    this.drawCounter = 0;
 	  }
@@ -317,10 +386,26 @@
 /* 2 */
 /***/ (function(module, exports) {
 
-	class Background {
-	  constructor() {
-	    this.x = 0;
-	    this.y = 0;
+	class GamePieces {
+	  constructor(x, y, width, height) {
+	    this.x = x;
+	    this.y = y;
+	    this.width = width;
+	    this.height = height;
+	  }
+	}
+
+	module.exports = GamePieces;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const GamePieces = __webpack_require__(2);
+
+	class Background extends GamePieces {
+	  constructor(x, y) {
+	    super(x, y);
 	  }
 
 	  draw(context) {
@@ -341,13 +426,14 @@
 	module.exports = Background;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	class Ground {
-	  constructor() {
-	    this.x = 0;
-	    this.y = 528;
+	const GamePieces = __webpack_require__(2);
+
+	class Ground extends GamePieces {
+	  constructor(x, y) {
+	    super(x, y);
 	  }
 
 	  draw(context) {
@@ -357,8 +443,8 @@
 	    context.drawImage(groundImage, this.x, this.y);
 	  }
 
-	  groundMove() {
-	    this.x--;
+	  groundMove(speed) {
+	    this.x = this.x - speed;
 	    if (this.x < -1056) {
 	      this.x = 0;
 	    }
@@ -368,15 +454,14 @@
 	module.exports = Ground;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	class Obstacle {
+	const GamePieces = __webpack_require__(2);
+
+	class Obstacle extends GamePieces {
 	  constructor(x, y, width, height) {
-	    this.x = x;
-	    this.y = y;
-	    this.width = width;
-	    this.height = height;
+	    super(x, y, width, height);
 	    this.scored = false;
 	  }
 
@@ -396,18 +481,14 @@
 	module.exports = Obstacle;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	const Obstacle = __webpack_require__(4);
+	const GamePieces = __webpack_require__(2);
 
-	class ObstacleUpper extends Obstacle {
+	class ObstacleUpper extends GamePieces {
 	  constructor(x, y, width, height) {
 	    super(x, y, width, height);
-	    this.x = x;
-	    this.y = y;
-	    this.width = width;
-	    this.height = height;
 	    this.scored = false;
 	  }
 
@@ -426,7 +507,7 @@
 	module.exports = ObstacleUpper;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 	class Player {
@@ -440,16 +521,16 @@
 	module.exports = Player;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(8);
+	var content = __webpack_require__(9);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(10)(content, {});
+	var update = __webpack_require__(11)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -466,21 +547,21 @@
 	}
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(9)();
+	exports = module.exports = __webpack_require__(10)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "canvas {\n  border: 3px solid black;\n}\n\nsection{\n  display: flex;\n}\n", ""]);
+	exports.push([module.id, "body{\nfont-family: 'Press Start 2P', cursive;\nbackground-color: #008c41;\nbackground-image: url(\"/Users/admin/turing/mod2/game-time/assets/basketball.png\");\n}\n\ncanvas {\n  border: 3px solid black;\n  position: absolute;\n  left: 15%;\n  top: 83px;\n}\n\nsection{\n  display: flex;\n  margin-top: 79px;\n}\n\n.welcome-screen,\n.game-over,\n.instruction-screen{\n  position: absolute;\n  top: 300px;\n  left: 17.2%;\n  height: 200px;\n  width: 400px;\n  background-color: #058213;\n  z-index: 1;\n  color: #593a01;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  border-radius: 10px;\n  border: 2px solid #825705;\n}\n\n.game-over{\n  z-index: 3;\n  display: none;\n}\n\n.instruction-screen{\n  z-index: 1;\n}\n\n.welcome-screen{\n  z-index: 2;\n}\n\nimg{\n  position: absolute;\n  left: 15.1%;\n  top: 86px;\n  height: 600;\n  width: 480;\n  z-index: 0;\n}\n\ninput{\n  width: 150px;\n  margin-bottom: 10px;\n}\n\nbutton{\n  width: 150px;\n}\n\n.duck-soup-h1{\n  margin: 0;\n  margin-bottom: 40px;\n}\n\n.score-board{\n  width: 480px;\n  height: 640px;\n  background-color: #058213;\n  margin-left: 30px;\n  border: 3px solid black;\n  position: absolute;\n  left: 60%;\n  top: 83px;\n}\n\nul{\n  list-style-type: none;\n  margin-left: 10%;\n}\n\nli{\n  font-size: 20px;\n  margin-bottom: 10px;\n  width: 300px;\n}\n\n.score-text{\n  float: right;\n}\n\nh2{\n  display: inline-block;\n  margin-left: 19%;\n  margin-bottom: 0;\n}\n\n.score-h2{\n  margin-left: 100px;\n}\n\n.top-score{\n  position: absolute;\n  left: 27%;\n  top: 80px;\n  z-index: 3;\n  color: white;\n  font-size: 40px;\n}\n\n.top-level{\n  position: absolute;\n  left: 16%;\n  top: 640px;\n  z-index: 3;\n  color: white;\n  font-size: 16px;\n}\n\nh4{\n  margin: 0;\n  margin-bottom: 20px;\n}\n", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	/*
@@ -536,7 +617,7 @@
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
