@@ -38,14 +38,14 @@ describe('Obstacle', function(){
     assert.isFunction(pipe.obstacleMove);
   })
 
-  it('should move 1 left on the axis when obstacleMove is called', () =>{
+  it('should move to left on the axis when a speed is passed and obstacleMove is called', () =>{
     const pipe = new Obstacle(720, 480, 100, 300);
-    pipe.obstacleMove();
-    assert.equal(pipe.x, 719);
+    pipe.obstacleMove(1.5);
+    assert.equal(pipe.x, 718.5);
 
     for (var i = 0; i < 100; i++) {
-      pipe.obstacleMove();
+      pipe.obstacleMove(1.5);
     }
-    assert.equal(pipe.x, 619);
+    assert.equal(pipe.x, 568.5);
   })
 })

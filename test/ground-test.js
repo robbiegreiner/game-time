@@ -9,41 +9,33 @@ describe('Obstacle', function(){
   });
 
   it('should be an object', () => {
-    const theGround = new Ground()
+    const theGround = new Ground(0, 528);
     assert.isObject(theGround);
   })
 
   it('should start with an x coordinate of 0', () => {
-    const theGround = new Ground()
+    const theGround = new Ground(0, 528);
     assert.equal(theGround.x, 0);
   })
 
   it('should start with a y coordinate of 528', () => {
-    const theGround = new Ground()
+    const theGround = new Ground(0, 528);
     assert.equal(theGround.y, 528);
   })
 
   it('should have a method called groundMove', () => {
-    const theGround = new Ground();
+    const theGround = new Ground(0, 528);
     assert.isFunction(theGround.groundMove);
   })
 
-  it('should move 1 to the left when groundMove is called', () =>{
-    const theGround = new Ground();
-    theGround.groundMove();
-    assert.equal(theGround.x, -1);
+  it('should move to the left a speed that is passed when groundMove is called', () =>{
+    const theGround = new Ground(0, 528);
+    theGround.groundMove(1.5);
+    assert.equal(theGround.x, -1.5);
 
-    for (var i = 0; i < 500; i++) {
-      theGround.groundMove();
+    for (var i = 0; i < 100; i++) {
+      theGround.groundMove(1.5);
     }
-    assert.equal(theGround.x, -501);
-  })
-
-  it('should reset to x coordinate 0 when it moves 1056', () => {
-    const theGround = new Ground();
-    for (var i = 0; i < 1057; i++) {
-      theGround.groundMove();
-    }
-    assert.equal(theGround.x, 0);
+    assert.equal(theGround.x, -151.5);
   })
 })
